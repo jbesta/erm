@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  erm-app:
+    build:
+      context: .
+    container_name: erm-app
+    depends_on:
+      - mongodb
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/erm
+      ERM_BOOTSTRAP_USER_EMAIL: 'admin@example.com'
+      ERM_BOOTSTRAP_USER_PASSWORD: 'adminsecret'
+    ports:
+      - "8080:8080"
+  mongodb:
+    image: mongo:8.0
+    ports:
+      - "27017:27017"

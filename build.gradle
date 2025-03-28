@@ -1,0 +1,72 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.4'
+	id 'io.spring.dependency-management' version '1.1.7'
+	id 'com.diffplug.spotless' version '7.0.2'
+}
+
+spotless {
+	java {
+		target 'src/**/*.java'
+		googleJavaFormat('1.17.0') // or use prettier if preferred
+		importOrder('java', 'javax', 'org', 'com')
+		removeUnusedImports()
+		trimTrailingWhitespace()
+		endWithNewline()
+	}
+}
+
+group = 'com.example'
+version = '0.0.1'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.mapstruct:mapstruct:1.6.3'
+	implementation 'io.mongock:mongock:5.5.1'
+	implementation 'io.mongock:mongock-springboot:5.5.1'
+	implementation 'io.mongock:mongodb-springdata-v4-driver:5.5.1'
+	implementation 'com.fasterxml.jackson.core:jackson-core:2.18.3'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.3'
+	implementation 'com.fasterxml.jackson.core:jackson-annotations:2.18.3'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6'
+	implementation 'org.springdoc:springdoc-openapi-starter-common:2.8.6'
+	implementation 'ch.qos.logback:logback-classic:1.5.18'
+	implementation 'net.logstash.logback:logstash-logback-encoder:8.0'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.projectlombok:lombok'
+	testImplementation 'org.assertj:assertj-core:3.27.3'
+//	implementation platform('org.testcontainers:testcontainers-bom:1.20.6')
+//	testImplementation 'org.testcontainers:junit-jupiter'
+//	testImplementation 'org.testcontainers:mongodb'
+//	testImplementation 'io.rest-assured:rest-assured'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+tasks.named('jar') {
+	// do not generate plain jar
+	enabled = false
+}

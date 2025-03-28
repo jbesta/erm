@@ -1,0 +1,59 @@
+spring:
+  security:
+    user:
+      name: admin
+      password: admin
+      roles:
+        - ADMIN
+  application:
+    name: erm
+  threads:
+    virtual:
+      enabled: true
+  mvc:
+    problemdetails:
+      enabled: true
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/erm}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus
+
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+  tracing:
+    enabled: true
+
+mongock:
+  enabled: true
+  migration-scan-package:
+    - com.example.erm.repository.migration
+  runner-type: applicationrunner
+
+logging:
+  level:
+    org.springframework.web: debug
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /
+
+erm:
+  bootstrap:
+    user:
+      email: ${ERM_BOOTSTRAP_USER_EMAIL}
+      password: ${ERM_BOOTSTRAP_USER_PASSWORD}

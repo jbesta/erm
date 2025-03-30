@@ -1,6 +1,7 @@
 package com.example.erm.security;
 
 import java.io.IOException;
+import java.net.URI;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
@@ -27,6 +28,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
       AuthenticationException authException)
       throws IOException {
     ProblemDetail problemDetail = problemDetailFactory.unauthorized();
+    problemDetail.setInstance(URI.create(request.getRequestURI()));
 
     response.setStatus(problemDetail.getStatus());
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);

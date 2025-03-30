@@ -16,7 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 
 import com.example.erm.api.util.ProblemDetailFactory;
@@ -64,7 +64,7 @@ public class SecurityConfiguration {
 
   @Bean
   public SecurityContextRepository securityContextRepository() {
-    return new HttpSessionSecurityContextRepository();
+    return new RequestAttributeSecurityContextRepository();
   }
 
   @Bean

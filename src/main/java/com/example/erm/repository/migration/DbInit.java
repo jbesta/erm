@@ -39,6 +39,22 @@ public class DbInit {
         .indexOps(User.class)
         .ensureIndex(
             new Index().named("email_1").on(User.Fields.email, Sort.Direction.ASC).unique());
+
+    mongoTemplate
+        .indexOps(ExternalProject.class)
+        .ensureIndex(
+            new Index()
+                .named("userId_1_createdAt_1")
+                .on(ExternalProject.Fields.userId, Sort.Direction.ASC)
+                .on(ExternalProject.Fields.createdAt, Sort.Direction.ASC));
+
+    mongoTemplate
+        .indexOps(ExternalProject.class)
+        .ensureIndex(
+            new Index()
+                .named("userId_1_name_1")
+                .on(ExternalProject.Fields.userId, Sort.Direction.ASC)
+                .on(ExternalProject.Fields.name, Sort.Direction.ASC));
   }
 
   @RollbackBeforeExecution

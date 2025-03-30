@@ -61,7 +61,8 @@ public class ProblemDetailFactory {
 
   public ProblemDetail unauthorized() {
     ProblemDetail problemDetail =
-        ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, "Unauthorized");
+        ProblemDetail.forStatusAndDetail(
+            HttpStatus.UNAUTHORIZED, "Provide correct credentials via http basic authentication");
     problemDetail.setTitle("Unauthorized");
 
     return problemDetail;

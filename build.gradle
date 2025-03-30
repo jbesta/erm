@@ -8,8 +8,8 @@ plugins {
 spotless {
 	java {
 		target 'src/**/*.java'
-		googleJavaFormat('1.17.0') // or use prettier if preferred
-		importOrder('java', 'javax', 'org', 'com')
+		googleJavaFormat('1.17.0')
+		importOrder('java', 'org', 'com')
 		removeUnusedImports()
 		trimTrailingWhitespace()
 		endWithNewline()

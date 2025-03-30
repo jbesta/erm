@@ -139,6 +139,41 @@ public class UserApiController {
     return userApiMapper.toResponse(updatedUser);
   }
 
+  @PutMapping(
+      value = "me",
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  @Operation(summary = "updates current user")
+  @ApiResponse(
+      responseCode = "200",
+      description = "user successfully updated",
+      content =
+          @Content(
+              mediaType = MediaType.APPLICATION_JSON_VALUE,
+              schema = @Schema(implementation = UserResponse.class)))
+  @ApiResponse(
+      responseCode = "400",
+      description = "Request constraint violation",
+      content =
+          @Content(
+              mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+              schema = @Schema(implementation = ProblemDetail.class)))
+  public UserResponse updateCurrentUser(
+      @Valid @RequestBody UserUpdateRequest request, Principal principal) {
+    User currentUser =
+        userService
+            .findUserByEmail(principal.getName())
+            .orElseThrow(() -> new UserNotFoundException(principal.getName()));
+    UserUpdateCommand userUpdateCommand = userApiMapper.toCommand(currentUser.getId(), request);
+    User updatedUser =
+        userService
+            .updateUser(userUpdateCommand)
+            .orElseThrow(() -> new UserNotFoundException(currentUser.getId()));
+
+    return userApiMapper.toResponse(updatedUser);
+  }
+
   @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.OK)
   @PreAuthorize("hasRole('ROLE_ADMIN')")

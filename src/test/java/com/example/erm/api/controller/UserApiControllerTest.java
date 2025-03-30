@@ -199,6 +199,39 @@ class UserApiControllerTest {
 
   @WithMockUser
   @Test
+  void testUpdateCurrentUser() throws Exception {
+    doReturn(Optional.of(TEST_USER)).when(userService).findUserByEmail(any());
+    doReturn(Optional.of(TEST_USER)).when(userService).updateUser(any());
+    MockHttpServletResponse response =
+        mvc.perform(
+                put("/api/user/me")
+                    .content(
+                        """
+                                                                                        {
+                                                                                            "email": "alice@foo.com",
+                                                                                            "password": "topsecret",
+                                                                                            "name": "Alice",
+                                                                                            "roles": ["USER"]
+                                                                                        }
+                                                                                        """)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andReturn()
+            .getResponse();
+
+    assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+    assertThat(response.getContentAsString()).isNotNull();
+
+    ArgumentCaptor<UserUpdateCommand> captor = ArgumentCaptor.forClass(UserUpdateCommand.class);
+    verify(userService).updateUser(captor.capture());
+    assertThat(captor.getValue()).isNotNull();
+    assertThat(captor.getValue().email()).isEqualTo("alice@foo.com");
+    assertThat(captor.getValue().password()).isEqualTo("topsecret");
+    assertThat(captor.getValue().name()).isEqualTo("Alice");
+    assertThat(captor.getValue().roles()).isEqualTo(List.of("USER"));
+  }
+
+  @WithMockUser
+  @Test
   void testUpdateUserNotAdmin() throws Exception {
     String userId = "123";
     mvc.perform(
